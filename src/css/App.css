@@ -8,5 +8,21 @@ body {
 }
 
 #character-input-container {
-    margin-top: 10%;
+    margin-top: 5%;
+}
+
+#infoColumn {
+    padding: 0 14px;
+}
+
+.ui.segment {
+    background: rgba(255, 255, 255, .85);
+}
+
+#characterImage {
+    width: 100%;
+}
+
+#nameRow {
+    text-align: center;
 }

@@ -7,8 +7,6 @@ import Button from '@material-ui/core/Button'
 import {connect} from 'react-redux';
 import {selectCharacter} from '../actions';
 
-import '../css/CharacterInput.css';
-
 
 class CharacterInput extends React.Component {
 

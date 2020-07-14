@@ -10,9 +10,28 @@ class CharacterEquipment extends React.Component {
     }
 
     render() {
-        console.log(this.state)
-        return (
-            <div></div>
+
+        const odds = [];
+        const evens = [];
+
+        this.state.equipment.map((item, index) => {
+            if(index % 2 === 0){
+                evens.push(<p key={item.item.id}>{item.slot.name}: {item.name}</p>)
+            } else{
+                odds.push(<p key={item.item.id}>{item.slot.name}: {item.name}</p>)
+            }
+            return null;
+        });
+
+     return (
+            <div className="ui grid">
+                <div className="column eight wide">
+                    {evens}
+                </div>
+                <div className="column eight wide">
+                    {odds}
+                </div>
+            </div>
         );
     }
 }

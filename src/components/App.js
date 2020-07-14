@@ -14,7 +14,7 @@ class App extends React.Component {
                 <div className="ui container" id="character-input-container">
                     <CharacterInput />
                 </div>
-                <div className="ui container">
+                <div className="ui container" style={{width: '80%'}}>
                     <CharacterDetails />
                 </div>
             </div>
