@@ -1,0 +1,12 @@
+body {
+    background-color: white;
+    margin: 0;
+    box-sizing: border-box;
+    padding-top: 1em;
+    background-image: url('../Media/background.jpg');
+    font-family: 'Roboto';
+}
+
+#character-input-container {
+    margin-top: 10%;
+}
