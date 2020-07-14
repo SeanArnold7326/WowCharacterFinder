@@ -3,7 +3,6 @@ import React from 'react';
 import CharacterInput from './CharacterInput';
 
 import '../css/App.css';
-import Axios from 'axios';
 import CharacterDetails from './CharacterDetails';
 
 

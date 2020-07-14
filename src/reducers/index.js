@@ -1,9 +1,7 @@
-const selectedCharacterReducer = (selectedCharacter = null, action) => {
-    if (action.type === 'CHARACTER_SELECTED') {
-        return action.payload;
-    }
+import {combineReducers} from 'redux';
 
-    return selectedCharacter;
-} 
+import selectCharacterReducer from './selectCharacterReducer';
 
-export default selectedCharacterReducer;
+export default combineReducers({
+    selectedCharacter: selectCharacterReducer
+})

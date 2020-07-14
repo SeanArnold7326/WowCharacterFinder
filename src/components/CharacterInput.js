@@ -30,17 +30,7 @@ class CharacterInput extends React.Component {
             }
         })
 
-        const response = await Axios.get('https://us.api.blizzard.com/profile/wow/character/' + this.state.realm + '/' + this.state.characterName + '/statistics', {
-            params: {
-                namespace: 'profile-us',
-                locale: 'en_US'
-            },
-            headers: {
-                Authorization: 'Bearer ' + token.data.access_token
-            }
-        })
-
-        this.props.selectCharacter(response.data)
+        this.props.selectCharacter(this.state.realm, this.state.characterName, token.data.access_token);
     }
 
 
@@ -98,8 +88,7 @@ class CharacterInput extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
-    return {  }
+    return { selectedCharacter: state.selectedCharacterCharacter}
 }
 
 export default connect(mapStateToProps, {selectCharacter})(CharacterInput);
