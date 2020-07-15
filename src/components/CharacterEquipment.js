@@ -16,9 +16,9 @@ class CharacterEquipment extends React.Component {
 
         this.state.equipment.map((item, index) => {
             if(index % 2 === 0){
-                evens.push(<p key={item.item.id}>{item.slot.name}: {item.name}</p>)
+                evens.push(<p key={item.item.id}><strong>{item.slot.name}:</strong> {item.name}</p>)
             } else{
-                odds.push(<p key={item.item.id}>{item.slot.name}: {item.name}</p>)
+                odds.push(<p key={item.item.id}><strong>{item.slot.name}:</strong> {item.name}</p>)
             }
             return null;
         });

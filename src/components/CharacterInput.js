@@ -67,6 +67,8 @@ class CharacterInput extends React.Component {
             }
         })
 
+        console.log(token.data.access_token);
+
         const response = await Axios.get('https://us.api.blizzard.com/data/wow/realm/index', {
             params: {
                 namespace: 'dynamic-us',
