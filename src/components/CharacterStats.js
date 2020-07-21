@@ -8,6 +8,10 @@ class CharacterStats extends React.Component {
         this.state = {stats: this.props.statistics}
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({ stats: props.statistics});
+    }
+
     render() {
         const stats = this.state.stats;
         return (

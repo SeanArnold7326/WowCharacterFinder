@@ -86,7 +86,7 @@ class CharacterInput extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return { selectedCharacter: state.selectedCharacterCharacter}
+    return { selectedCharacter: state.selectedCharacter}
 }
 
 export default connect(mapStateToProps, {selectCharacter})(CharacterInput);

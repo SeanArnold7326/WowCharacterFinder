@@ -9,6 +9,10 @@ class CharacterEquipment extends React.Component {
         this.state = {equipment: this.props.equipment.equipped_items}
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({ equipment: props.equipments.equipped_items});
+    }
+
     render() {
 
         const odds = [];

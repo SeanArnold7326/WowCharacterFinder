@@ -9,6 +9,10 @@ class CharacterImage extends React.Component {
         this.state = {image: this.props.image};
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({ image: props.image});
+    }
+
     render() {
         return (
             <div>
