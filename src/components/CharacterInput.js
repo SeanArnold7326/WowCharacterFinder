@@ -4,6 +4,10 @@ import Axios from 'axios';
 
 import Button from '@material-ui/core/Button'
 
+import { Combobox } from 'react-widgets/'
+
+import "react-widgets/dist/css/react-widgets.css";
+
 import {connect} from 'react-redux';
 import {selectCharacter} from '../actions';
 
@@ -28,24 +32,30 @@ class CharacterInput extends React.Component {
             }
         })
 
-        this.props.selectCharacter(this.state.realm, this.state.characterName, token.data.access_token);
+        this.props.selectCharacter(this.state.realm, this.state.characterName.toLowerCase(), token.data.access_token);
     }
 
 
     render() {
+        let openDropdown = false;
         return (
             <div className="ui segment">
                 <form className="ui form">
                     <div className = "field">
                         <label>Character Name</label>
-                        <input type="text" value={this.state.characterName} onChange={(e) => this.setState({characterName: e.target.value.toLowerCase()})} placeholder="Enter Name"/>
+                        <input type="text" value={this.state.characterName} onChange={(e) => this.setState({characterName: e.target.value})} placeholder="Enter Name"/>
                     </div>
                     <div className = "field">
-                        <label>Realm</label>
-                        <select value={this.state.realm} onChange={(e) => this.setState({realm: e.target.value})}>
-                            <option key="default" value=''>Please pick a realm</option>
-                            {this.state.realms}
-                        </select>
+                        <Combobox 
+                            data={this.state.realms} 
+                            textField='name' 
+                            valueField='slug' 
+                            caseSensitive={false} 
+                            minLength={1} 
+                            filter="startsWith"
+                            value={this.state.realm}
+                            onChange={(value) => this.setState({realm: value.slug})}
+                        />
                     </div>
                     <Button variant="contained" coolor="Primary" type="submit" onClick={this.onFormSubmit}>Search</Button>
                 </form>
@@ -77,11 +87,7 @@ class CharacterInput extends React.Component {
             }
         });
 
-        const realms = response.data.realms.map((realm) => {
-            return <option key={realm.id} value={realm.slug}>{realm.name}</option>
-        })
-
-        this.setState({realms: realms});
+        this.setState({realms: response.data.realms});
     }
 }
 
