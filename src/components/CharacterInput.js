@@ -38,7 +38,7 @@ class CharacterInput extends React.Component {
                 <form className="ui form">
                     <div className = "field">
                         <label>Character Name</label>
-                        <input type="text" value={this.state.characterName} onChange={(e) => this.setState({characterName: e.target.value})} placeholder="Enter Name"/>
+                        <input type="text" value={this.state.characterName} onChange={(e) => this.setState({characterName: e.target.value.toLowerCase()})} placeholder="Enter Name"/>
                     </div>
                     <div className = "field">
                         <label>Realm</label>
