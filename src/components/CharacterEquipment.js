@@ -10,7 +10,7 @@ class CharacterEquipment extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({ equipment: props.equipments.equipped_items});
+        this.setState({ equipment: props.equipment.equipped_items});
     }
 
     render() {
