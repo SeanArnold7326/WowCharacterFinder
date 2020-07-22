@@ -2,9 +2,10 @@ import React from 'react';
 
 import Axios from 'axios';
 
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
+import { Alert, AlertTitle } from '@material-ui/lab/';
 
-import { Combobox } from 'react-widgets/'
+import { DropdownList } from 'react-widgets/'
 
 import "react-widgets/dist/css/react-widgets.css";
 
@@ -37,16 +38,29 @@ class CharacterInput extends React.Component {
 
 
     render() {
-        let openDropdown = false;
+        var alert = '';
+
+        if (this.state.status !== 200) {
+            alert = (
+                <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    There was an error receiving the list of realms. 
+                </Alert>
+            );
+        } else {
+            alert = '';
+        }
+
         return (
             <div className="ui segment">
+                {alert}
                 <form className="ui form">
                     <div className = "field">
                         <label>Character Name</label>
                         <input type="text" value={this.state.characterName} onChange={(e) => this.setState({characterName: e.target.value})} placeholder="Enter Name"/>
                     </div>
                     <div className = "field">
-                        <Combobox 
+                        <DropdownList 
                             data={this.state.realms} 
                             textField='name' 
                             valueField='slug' 
@@ -87,12 +101,13 @@ class CharacterInput extends React.Component {
             }
         });
 
+        this.setState({status: response.status});
         this.setState({realms: response.data.realms});
     }
 }
 
 const mapStateToProps = (state) => {
-    return { selectedCharacter: state.selectedCharacter}
+    return { selectedCharacter: state.selectedCharacter }
 }
 
 export default connect(mapStateToProps, {selectCharacter})(CharacterInput);
