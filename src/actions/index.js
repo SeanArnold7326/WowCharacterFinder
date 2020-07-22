@@ -66,7 +66,7 @@ export const getToken = (client_id, secret_id) => {
 
     return async function(dispatch) {
 
-        var token = {access_token: '', status: ''};
+        var token = {access_token: '', error: {status: false, message: ''}};
         var response = '';
         try {
             response = await Axios.get('https://us.battle.net/oauth/token', {
@@ -79,9 +79,9 @@ export const getToken = (client_id, secret_id) => {
                 }
             })
 
-            token = {access_token: response.data.access_token, status: response.status}
+            token.access_token = response.data.access_token;
         } catch (exception) {
-            token.status = response.status;
+            token.error = {status: true, message: exception.message};
         }
 
         dispatch({ type: 'RECEIVE_TOKEN', payload: token});
@@ -90,7 +90,7 @@ export const getToken = (client_id, secret_id) => {
 
 export const getRealms = (token) => {
     return async function(dispatch) {
-        var realms = {};
+        var realms = {realms: '', error: {status: false, message: ''}};
         var response = '';
         try {
             response = await Axios.get('https://us.api.blizzard.com/data/wow/realm/index', {
@@ -103,10 +103,10 @@ export const getRealms = (token) => {
                 }
             });
 
-            realms = {realms: response.data.realms, status: response.status};
+            realms.realms = response.data.realms;
 
         } catch (exception) {
-            realms = {realms: '', status: response.status};
+            realms.error = {status: true, message: exception.message};
         }      
 
         dispatch({ type: 'GET_REALMS', payload: realms});

@@ -28,11 +28,12 @@ class CharacterInput extends React.Component {
         
         if(this.props.realms) {
 
-            if (this.props.realms.status !== 200) {
+            if (this.props.realms.error.status === true) {
                 return (
                     <Alert severity="error">
                         <AlertTitle>Error</AlertTitle>
-                        There was an error receiving the list of realms. 
+                        <strong>{this.props.realms.error.message}</strong><br/>
+                        <span>There was an error receiving the list of realms.</span>
                     </Alert>
                 );
             } else {

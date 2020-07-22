@@ -16,11 +16,12 @@ class App extends React.Component {
 
     render() {
         if(this.props.receivedToken) {
-            if(this.props.receivedToken.status !== 200) {
+            if(this.props.receivedToken.error.status === true) {
                 return (
                     <Alert severity="error">
                         <AlertTitle>Error</AlertTitle>
-                        There was an error receiving the authorization token. 
+                        <strong>{this.props.receivedToken.error.message}</strong><br/>
+                        <span>There was an error receiving the authorization token. </span>
                     </Alert>
                 );
             }else {
