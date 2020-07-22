@@ -10,7 +10,7 @@ import { DropdownList } from 'react-widgets/'
 import "react-widgets/dist/css/react-widgets.css";
 
 import {connect} from 'react-redux';
-import {selectCharacter} from '../actions';
+import {selectCharacter, getRealms} from '../actions';
 
 
 class CharacterInput extends React.Component {
@@ -19,95 +19,63 @@ class CharacterInput extends React.Component {
 
     onFormSubmit = async (event) => {
         event.preventDefault();
-        const client_id = 'f6725f16f7744f389b431b4a2135660b';
-        const secret_id = '4MlS2MDpuTFkZIRdxD3lSLyVY0Unklcj';
-
-
-        const token = await Axios.get('https://us.battle.net/oauth/token', {
-            auth: {
-                username: client_id,
-                password: secret_id
-            },
-            params: {
-                grant_type: 'client_credentials'
-            }
-        })
-
-        this.props.selectCharacter(this.state.realm, this.state.characterName.toLowerCase(), token.data.access_token);
+        this.props.selectCharacter(this.state.realm, this.state.characterName.toLowerCase(), this.props.token);
     }
 
 
     render() {
         var alert = '';
+        
+        if(this.props.realms) {
 
-        if (this.state.status !== 200) {
-            alert = (
-                <Alert severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    There was an error receiving the list of realms. 
-                </Alert>
-            );
-        } else {
-            alert = '';
+            if (this.props.realms.status !== 200) {
+                return (
+                    <Alert severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        There was an error receiving the list of realms. 
+                    </Alert>
+                );
+            } else {
+                return (
+                    <div className="ui segment">
+                        {alert}
+                        <form className="ui form">
+                            <div className = "field">
+                                <label>Character Name</label>
+                                <input type="text" value={this.props.characterName} onChange={(e) => this.setState({characterName: e.target.value})} placeholder="Enter Name"/>
+                            </div>
+                            <div className = "field">
+                                <DropdownList 
+                                    data={this.props.realms.realms} 
+                                    textField='name' 
+                                    valueField='slug' 
+                                    caseSensitive={false} 
+                                    minLength={1} 
+                                    filter="startsWith"
+                                    value={this.props.realm}
+                                    onChange={(value) => this.setState({realm: value.slug})}
+                                />
+                            </div>
+                            <Button variant="contained" coolor="Primary" type="submit" onClick={this.onFormSubmit}>Search</Button>
+                        </form>
+                    </div>
+                )
+            }
+        }else {
+            return (<div></div>)
         }
-
-        return (
-            <div className="ui segment">
-                {alert}
-                <form className="ui form">
-                    <div className = "field">
-                        <label>Character Name</label>
-                        <input type="text" value={this.state.characterName} onChange={(e) => this.setState({characterName: e.target.value})} placeholder="Enter Name"/>
-                    </div>
-                    <div className = "field">
-                        <DropdownList 
-                            data={this.state.realms} 
-                            textField='name' 
-                            valueField='slug' 
-                            caseSensitive={false} 
-                            minLength={1} 
-                            filter="startsWith"
-                            value={this.state.realm}
-                            onChange={(value) => this.setState({realm: value.slug})}
-                        />
-                    </div>
-                    <Button variant="contained" coolor="Primary" type="submit" onClick={this.onFormSubmit}>Search</Button>
-                </form>
-            </div>
-        )
     }
 
     async componentDidMount() {
-        const client_id = 'f6725f16f7744f389b431b4a2135660b';
-        const secret_id = '4MlS2MDpuTFkZIRdxD3lSLyVY0Unklcj';
-
-        const token = await Axios.get('https://us.battle.net/oauth/token', {
-            auth: {
-                username: client_id,
-                password: secret_id
-            },
-            params: {
-                grant_type: 'client_credentials'
-            }
-        })
-
-        const response = await Axios.get('https://us.api.blizzard.com/data/wow/realm/index', {
-            params: {
-                namespace: 'dynamic-us',
-                locale: 'en_US'
-            },
-            headers: {
-                Authorization: 'Bearer ' + token.data.access_token
-            }
-        });
-
-        this.setState({status: response.status});
-        this.setState({realms: response.data.realms});
+        this.props.getRealms(this.props.token)
     }
 }
 
 const mapStateToProps = (state) => {
-    return { selectedCharacter: state.selectedCharacter }
+    return { 
+        selectedCharacter: state.selectedCharacter, 
+        realms: state.allRealms  
+    }
 }
 
-export default connect(mapStateToProps, {selectCharacter})(CharacterInput);
+export default connect(mapStateToProps, {selectCharacter, getRealms})(CharacterInput);

@@ -62,3 +62,54 @@ export const selectCharacter = (realm, characterName, token) => {
     };
 };
 
+export const getToken = (client_id, secret_id) => {
+
+    return async function(dispatch) {
+
+        var token = {access_token: '', status: ''};
+        var response = '';
+        try {
+            response = await Axios.get('https://us.battle.net/oauth/token', {
+                auth: {
+                    username: client_id,
+                    password: secret_id
+                },
+                params: {
+                    grant_type: 'client_credentials'
+                }
+            })
+
+            token = {access_token: response.data.access_token, status: response.status}
+        } catch (exception) {
+            token.status = response.status;
+        }
+
+        dispatch({ type: 'RECEIVE_TOKEN', payload: token});
+    }
+}
+
+export const getRealms = (token) => {
+    return async function(dispatch) {
+        var realms = {};
+        var response = '';
+        try {
+            response = await Axios.get('https://us.api.blizzard.com/data/wow/realm/index', {
+                params: {
+                    namespace: 'dynamic-us',
+                    locale: 'en_US'
+                },
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            });
+
+            realms = {realms: response.data.realms, status: response.status};
+
+        } catch (exception) {
+            realms = {realms: '', status: response.status};
+        }      
+
+        dispatch({ type: 'GET_REALMS', payload: realms});
+    }
+}
+
